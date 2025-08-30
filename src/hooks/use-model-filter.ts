@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Model, FilterSortState, Company, Provider } from '@/types';
-import { sortModels, generateFilterList } from '@/lib/utils';
+import { sortModels } from '@/lib/utils';
 
 export function useModelFilter(models: Model[]) {
   const [filterSortState, setFilterSortState] = useState<FilterSortState>({
@@ -10,40 +10,89 @@ export function useModelFilter(models: Model[]) {
     selectedCompanies: [],
     selectedProviders: [],
   });
+  // Debounced search term
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(filterSortState.searchTerm);
 
   const [selectedModelIds, setSelectedModelIds] = useState<Set<string>>(new Set());
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(filterSortState.searchTerm);
+    }, 300); // 300ms delay
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [filterSortState.searchTerm]);
+
   const filteredAndSortedModels = useMemo(() => {
-    let filtered = models;
+    const {
+      sortBy,
+      showReasoningOnly,
+      selectedCompanies,
+      selectedProviders,
+    } = filterSortState;
 
-    if (filterSortState.showReasoningOnly) {
-      filtered = filtered.filter(model => model.supports_reasoning);
-    }
+    const companySet = new Set(selectedCompanies);
+    const providerSet = new Set(selectedProviders);
+    const lowercasedFilter = debouncedSearchTerm.toLowerCase();
 
-    if (filterSortState.selectedCompanies.length > 0) {
-      filtered = filtered.filter(model => filterSortState.selectedCompanies.includes(model.company_name));
-    }
+    const filtered = models.filter(model => {
+      // Reasoning filter
+      if (showReasoningOnly && !model.supports_reasoning) {
+        return false;
+      }
+      // Company filter
+      if (companySet.size > 0 && !companySet.has(model.company_name)) {
+        return false;
+      }
+      // Provider filter
+      if (providerSet.size > 0 && !providerSet.has(model.provider_name)) {
+        return false;
+      }
+      // Search term filter
+      if (debouncedSearchTerm) {
+        if (
+          !model.name.toLowerCase().includes(lowercasedFilter) &&
+          !model.company_name.toLowerCase().includes(lowercasedFilter) &&
+          !model.provider_display_name
+            .toLowerCase()
+            .includes(lowercasedFilter) &&
+          !model.description.toLowerCase().includes(lowercasedFilter)
+        ) {
+          return false;
+        }
+      }
 
-    if (filterSortState.selectedProviders.length > 0) {
-      filtered = filtered.filter(model => filterSortState.selectedProviders.includes(model.provider_name));
-    }
+      return true;
+    });
 
-    if (filterSortState.searchTerm) {
-      const lowercasedFilter = filterSortState.searchTerm.toLowerCase();
-      filtered = filtered.filter(
-        model =>
-          model.name.toLowerCase().includes(lowercasedFilter) ||
-          model.company_name.toLowerCase().includes(lowercasedFilter) ||
-          model.provider_display_name.toLowerCase().includes(lowercasedFilter) ||
-          model.description.toLowerCase().includes(lowercasedFilter)
-      );
-    }
+    return sortModels(filtered, sortBy);
+  }, [models, filterSortState.sortBy, filterSortState.showReasoningOnly, filterSortState.selectedCompanies, filterSortState.selectedProviders, debouncedSearchTerm]);
+
+  const { companyList, providerList } = useMemo(() => {
+    const companyCounts: Record<string, number> = {};
+    const providerCounts: Record<string, number> = {};
+
+    models.forEach(model => {
+      if (model.company_name) {
+        companyCounts[model.company_name] = (companyCounts[model.company_name] || 0) + 1;
+      }
+      if (model.provider_name) {
+        providerCounts[model.provider_name] = (providerCounts[model.provider_name] || 0) + 1;
+      }
+    });
+
+    const companies = Object.entries(companyCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
     
-    return sortModels(filtered, filterSortState.sortBy);
-  }, [models, filterSortState]);
+    const providers = Object.entries(providerCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
-  const companyList: Company[] = useMemo(() => generateFilterList(models, 'company_name'), [models]);
-  const providerList: Provider[] = useMemo(() => generateFilterList(models, 'provider_name'), [models]);
+    return { companyList: companies, providerList: providers };
+  }, [models]);
 
   const toggleModelSelection = (modelId: string) => {
     setSelectedModelIds(prev => {
@@ -57,9 +106,20 @@ export function useModelFilter(models: Model[]) {
     });
   };
   
-  const clearSelection = () => {
+  const clearSelection = useCallback(() => {
     setSelectedModelIds(new Set());
-  };
+  }, []);
+
+  const resetAllFilters = useCallback(() => {
+    setFilterSortState({
+      searchTerm: '',
+      sortBy: 'updated_at:desc',
+      showReasoningOnly: false,
+      selectedCompanies: [],
+      selectedProviders: [],
+    });
+    clearSelection();
+  }, [clearSelection]);
 
   return {
     filterSortState,
@@ -68,6 +128,7 @@ export function useModelFilter(models: Model[]) {
     setSelectedModelIds,
     toggleModelSelection,
     clearSelection,
+    resetAllFilters,
     filteredAndSortedModels,
     companyList,
     providerList,

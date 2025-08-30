@@ -3,8 +3,9 @@
 import React, { useMemo } from 'react';
 import useSWR from 'swr';
 import { Skeleton } from "@/components/ui/skeleton";
+import { ModelListSkeleton } from "@/components/model-view-skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal, Copy, RefreshCw, CheckSquare, XSquare, FlipHorizontal } from "lucide-react";
+import { Terminal, Copy, RefreshCw, CheckSquare, XSquare, FlipHorizontal, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   TooltipProvider,
@@ -19,7 +20,7 @@ import { useModelFilter } from '@/hooks/use-model-filter';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const { data, error, isLoading, mutate } = useSWR<ModelsResponse>('/api/models', fetcher);
+  const { data, error, isLoading, isValidating, mutate } = useSWR<ModelsResponse>('/api/models', fetcher);
 
   const {
     filterSortState,
@@ -28,10 +29,23 @@ export default function Home() {
     setSelectedModelIds,
     toggleModelSelection,
     clearSelection,
+    resetAllFilters,
     filteredAndSortedModels,
     companyList,
     providerList,
   } = useModelFilter(data?.models || []);
+
+  // 格式化日期时间
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+  };
 
   // 手动刷新数据
   const handleRefresh = () => {
@@ -115,32 +129,9 @@ export default function Home() {
     });
   };
 
-  // 渲染加载状态
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">OpenRouter <span className="whitespace-nowrap">Free Models</span></h1>
-          <Button onClick={handleRefresh} disabled><RefreshCw className="mr-2 h-4 w-4" />刷新</Button>
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-3/4" />
-          {/* 可以添加更多 Skeleton 行来模拟表格 */}
-        </div>
-      </div>
-    );
-  }
-
-  // 渲染错误状态
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">OpenRouter <span className="whitespace-nowrap">Free Models</span></h1>
-          <Button onClick={handleRefresh}><RefreshCw className="mr-2 h-4 w-4" />刷新</Button>
-        </div>
+  const renderContent = () => {
+    if (error) {
+      return (
         <Alert variant="destructive">
           <Terminal className="h-4 w-4" />
           <AlertTitle>错误</AlertTitle>
@@ -148,22 +139,60 @@ export default function Home() {
             获取模型列表时发生错误: {error.message}
           </AlertDescription>
         </Alert>
+      );
+    }
+
+    if (isLoading) {
+      return <ModelListSkeleton />;
+    }
+
+    if (filteredAndSortedModels && filteredAndSortedModels.length > 0) {
+      return (
+        <div className="space-y-4">
+          {filteredAndSortedModels.map((model) => (
+            <ModelCard
+              key={model.id}
+              model={model}
+              isSelected={selectedModelIds.has(model.id)}
+              onSelect={(modelId, checked) => toggleModelSelection(modelId)}
+              onCompanyClick={handleCompanyChange}
+              isCompanySelected={filterSortState.selectedCompanies.includes(model.company_name)}
+              onProviderClick={handleProviderChange}
+              isProviderSelected={filterSortState.selectedProviders.includes(model.provider_display_name)}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className="text-center py-10">
+        <p className="text-muted-foreground">没有找到模型数据</p>
       </div>
     );
-  }
+  };
 
-  // 渲染数据
   return (
     <TooltipProvider>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold">OpenRouter <span className="whitespace-nowrap">Free Models</span></h1>
-            {data?.last_fetched && (
-              <p className="text-xs text-muted-foreground mt-1">
-                更新: {new Date(data.last_fetched).toLocaleString()}
-              </p>
-            )}
+            <h1 onClick={resetAllFilters} className="text-3xl font-bold cursor-pointer">OpenRouter <span className="whitespace-nowrap">Free Models</span></h1>
+            {/* 更新时间显示逻辑 */}
+            <div className="flex items-center text-xs text-muted-foreground mt-1 h-4">
+              {isLoading && !data ? (
+                <Skeleton className="h-4 w-48 rounded" />
+              ) : data?.last_fetched ? (
+                isValidating ? (
+                  <>
+                    <RefreshCw className="mr-1 h-3 w-3 animate-spin" />
+                    <span>更新中... (上次更新: {formatDateTime(data.last_fetched)})</span>
+                  </>
+                ) : (
+                  <span>更新: {formatDateTime(data.last_fetched)}</span>
+                )
+              ) : null}
+            </div>
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-muted-foreground">
@@ -221,27 +250,19 @@ export default function Home() {
           </CopyModal>
         </div>
 
-        {/* 模型卡片列表 */}
-        {filteredAndSortedModels && filteredAndSortedModels.length > 0 ? (
-          <div className="space-y-4">
-            {filteredAndSortedModels.map((model) => (
-              <ModelCard
-                key={model.id}
-                model={model}
-                isSelected={selectedModelIds.has(model.id)}
-                onSelect={(modelId, checked) => toggleModelSelection(modelId)}
-                onCompanyClick={handleCompanyChange}
-                isCompanySelected={filterSortState.selectedCompanies.includes(model.company_name)}
-                onProviderClick={handleProviderChange}
-                isProviderSelected={filterSortState.selectedProviders.includes(model.provider_display_name)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-10">
-            <p className="text-muted-foreground">没有找到模型数据</p>
-          </div>
-        )}
+        {/* 内容区域 */}
+        {renderContent()}
+        <footer className="text-center mt-10 py-4 border-t">
+          <a
+            href="https://github.com/jomon/openrouter-free-model"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center"
+          >
+            <Github className="mr-2 h-4 w-4" />
+            View project on GitHub
+          </a>
+        </footer>
       </div>
     </TooltipProvider>
   );

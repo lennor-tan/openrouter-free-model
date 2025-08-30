@@ -223,7 +223,7 @@ function CodePreview({ data, format }: { data: string; format: string }) {
     <div className="relative mt-4">
       <Label className="text-sm text-muted-foreground">{format}</Label>
       <pre
-        className="bg-muted rounded-md p-4 text-sm mt-1 font-mono overflow-y-auto whitespace-pre-wrap"
+        className="bg-muted rounded-md p-4 text-sm mt-1 font-mono overflow-y-auto whitespace-pre-wrap break-all"
         style={{ height: `${height}px` }}
       >
         <code>{data}</code>
@@ -269,7 +269,7 @@ function EditablePreview({
         ref={textareaRef}
         value={value}
         onChange={onChange}
-        className={`bg-muted rounded-md p-4 text-sm font-mono overflow-y-auto ${format ? 'mt-1' : ''}`}
+        className={`bg-muted rounded-md p-4 text-sm font-mono overflow-y-auto break-all ${format ? 'mt-1' : ''}`}
         placeholder="..."
         rows={1} // 初始行数设为1，让 useEffect 来控制高度
       />

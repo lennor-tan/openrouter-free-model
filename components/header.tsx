@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RefreshCw } from 'lucide-react';
@@ -38,12 +38,13 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const t = useTranslations('HomePage');
   const tHeader = useTranslations('Header');
+  const locale = useLocale();
 
   return (
     <header className="flex justify-between items-center mb-6" role="banner">
       <div>
         <Link
-          href="/"
+          href={`/${locale}`}
           onClick={resetAllFilters}
           className="flex items-center"
           aria-label="Back to homepage"

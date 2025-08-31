@@ -199,7 +199,7 @@ export default function Home() {
 
     if (filteredAndSortedModels && filteredAndSortedModels.length > 0) {
       return (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">
           {filteredAndSortedModels.map((model) => (
             <ModelCard
               key={model.id}

@@ -68,8 +68,8 @@ export function ModelCard({
                 onSelect(model.id, checked as boolean)
               }
             />
-            <div>
-              <h3 className="text-lg font-semibold flex items-center">
+            <div className="min-w-0 flex-grow">
+              <h3 className="text-lg font-semibold grid grid-cols-[auto_1fr_auto] items-center gap-x-2">
                 {model.company_name ? (
                   <TooltipProvider>
                     <Tooltip>
@@ -92,7 +92,7 @@ export function ModelCard({
                     </Tooltip>
                   </TooltipProvider>
                 ) : null}
-                <span className="ml-1">{model.name}</span>
+                <span className="truncate">{model.name}</span>
                 {model.supports_reasoning && (
                   <TooltipProvider>
                     <Tooltip>
@@ -123,7 +123,7 @@ export function ModelCard({
               </TooltipProvider>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 pl-2">
             <span className="text-xs text-muted-foreground">
               {formatDate(model.updated_at)}
             </span>

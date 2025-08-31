@@ -6,7 +6,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 async function getModels(): Promise<ModelsResponse> {
   noStore();
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const res = await fetch(`${baseUrl}/api/models`);
 
   if (!res.ok) {

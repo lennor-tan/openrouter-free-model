@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import Script from 'next/script';
 import '@/app/globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { locales } from '@/i18n';
@@ -109,7 +110,7 @@ export async function generateMetadata({
     },
     manifest: '/manifest.json',
     other: {
-      'google-site-verification': 'your-google-verification-code', // 需要替换为实际的验证码
+      'google-site-verification': '7HFogv_3jnp93WlOKjh26rw86o8jp4SWJoOzzbrDnAY',
     },
   };
 }
@@ -180,6 +181,20 @@ export default async function RootLayout({
 
         {/* DNS预解析 */}
         <link rel="dns-prefetch" href="//openrouter.ai" />
+
+        {/* Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-JE80QDWNX4"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-JE80QDWNX4');
+          `}
+        </Script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-w-[480px]`}

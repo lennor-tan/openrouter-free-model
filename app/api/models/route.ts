@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // 向 OpenRouter API 发起请求
+    console.log('Fetching data from https://openrouter.ai/api');
     const response = await fetch(
       'https://openrouter.ai/api/frontend/models/find?max_price=0',
       {

@@ -151,7 +151,7 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
         const keys = Object.keys(parsed);
         setNewApiCsvContent(keys.join(','));
       }
-    } catch (error) {
+    } catch {
       // If JSON is invalid, keep the last valid state
     }
   }, [newApiJsonContent]);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { getTranslations } from 'next-intl/server';
 import { ModelView } from '@/components/model-view';
 import { ModelsResponse } from '@/types';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -16,7 +15,6 @@ async function getModels(): Promise<ModelsResponse> {
 }
 
 export default async function Home() {
-  const t = await getTranslations('HomePage');
   const initialData = await getModels();
 
   return <ModelView initialData={initialData} />;

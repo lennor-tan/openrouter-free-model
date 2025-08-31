@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -92,7 +94,14 @@ export function ModelCard({
                     </Tooltip>
                   </TooltipProvider>
                 ) : null}
-                <span className="truncate">{model.name}</span>
+                <Link
+                  href={`https://openrouter.ai/${model.id}:free`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate hover:underline"
+                >
+                  {model.name}
+                </Link>
                 {model.supports_reasoning && (
                   <TooltipProvider>
                     <Tooltip>
@@ -140,10 +149,12 @@ export function ModelCard({
                   className="cursor-pointer text-sm px-2 py-1.5"
                 >
                   {model.icon_url ? (
-                    <img
+                    <Image
                       src={model.icon_url}
                       alt={model.provider_display_name}
                       className="mr-1 h-4 w-4 rounded-sm"
+                      width={16}
+                      height={16}
                     />
                   ) : (
                     <Server className="mr-1 h-4 w-4" />

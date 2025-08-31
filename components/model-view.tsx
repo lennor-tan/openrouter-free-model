@@ -101,10 +101,6 @@ export function ModelView({ initialData }: ModelViewProps) {
     );
   }, [selectedModelIds, filteredAndSortedModels]);
 
-  const updateFilterSortState = (newState: Partial<FilterSortState>) => {
-    setFilterSortState((prev) => ({ ...prev, ...newState }));
-  };
-
   const handleToggleSelectAll = () => {
     const filteredModelIds = new Set(
       filteredAndSortedModels.map((model) => model.id),
@@ -123,6 +119,10 @@ export function ModelView({ initialData }: ModelViewProps) {
   const handleInvertSelection = () => {
     const filteredModelIds = filteredAndSortedModels.map((model) => model.id);
     filteredModelIds.forEach(toggleModelSelection);
+  };
+
+  const updateFilterSortState = (newState: Partial<FilterSortState>) => {
+    setFilterSortState((prev) => ({ ...prev, ...newState }));
   };
 
   const handleCompanyChange = (

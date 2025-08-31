@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { Model, FilterSortState, Company, Provider } from '@/types';
 import { sortModels } from '@/lib/utils';
 
@@ -18,6 +18,27 @@ export function useModelFilter(models: Model[]) {
   const [selectedModelIds, setSelectedModelIds] = useState<Set<string>>(
     new Set(),
   );
+
+  const clearSelection = useCallback(() => {
+    setSelectedModelIds(new Set());
+  }, []);
+
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      clearSelection();
+    }
+  }, [
+    filterSortState.sortBy,
+    filterSortState.showReasoningOnly,
+    filterSortState.selectedCompanies,
+    filterSortState.selectedProviders,
+    debouncedSearchTerm,
+    clearSelection,
+  ]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -114,10 +135,6 @@ export function useModelFilter(models: Model[]) {
       return newSet;
     });
   };
-
-  const clearSelection = useCallback(() => {
-    setSelectedModelIds(new Set());
-  }, []);
 
   const resetAllFilters = useCallback(() => {
     setFilterSortState({

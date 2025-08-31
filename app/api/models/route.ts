@@ -1,4 +1,3 @@
-import { NextRequest } from 'next/server';
 import { ApiResponse } from '@/types';
 import { transformModels } from '@/lib/utils';
 
@@ -7,7 +6,7 @@ import { transformModels } from '@/lib/utils';
  * @param request Next.js 的请求对象
  * @returns 包含模型列表的 JSON 响应
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   // 设置缓存策略：每 12 小时 (43200 秒) 重新验证一次数据
   // 设置缓存策略：每 1 小时 (3600 秒) 重新验证一次数据
   const cacheControl = 'public, s-maxage=3600, stale-while-revalidate=86400';

@@ -17,7 +17,7 @@
     "sortContextAsc": "上下文长度 (升序)",
     "sortNameAsc": "名称 (A-Z)",
     "sortNameDesc": "名称 (Z-A)",
-    "showReasoningOnly": "仅显示支持推理的模型",
+    "showReasoningOnly": "仅推理模型",
     "clearAll": "全部清除"
   },
   "ModelCard": {
@@ -49,6 +49,14 @@
   },
   "HomePage": {
     "title": "OpenRouter <break>免费模型</break>",
+    "description": "发现和探索OpenRouter免费AI模型。浏览、筛选和导出ChatGPT、Claude、Gemini等模型配置，支持NewAPI和UniAPI格式。",
+    "heroTitle": "免费AI模型浏览器",
+    "heroSubtitle": "浏览和发现OpenRouter免费AI模型，具备高级筛选、排序和导出功能",
+    "featuresTitle": "主要功能",
+    "feature1": "浏览100+顶级供应商的免费AI模型",
+    "feature2": "按公司、供应商和架构进行高级筛选",
+    "feature3": "导出NewAPI和UniAPI配置",
+    "feature4": "实时模型更新和可用性检查",
     "lastUpdated": "更新: {date}",
     "updating": "更新中... (上次更新: {date})",
     "selected": "已选择: {selectedCount} / {totalCount}",
@@ -60,6 +68,28 @@
     "errorTitle": "错误",
     "errorMessage": "获取模型列表时发生错误: {message}",
     "noModelsFound": "没有找到模型数据",
-    "viewOnGithub": "在 GitHub 上查看项目"
+    "viewOnGithub": "在 GitHub 上查看项目",
+    "subheading": "探索、筛选并导出免费AI模型",
+    "introText": "这里是您发现、筛选和管理OpenRouter所有免费AI模型的中心枢纽。轻松选择模型并导出其ID，以便与NewAPI和UniAPI等工具无缝集成。",
+    "faqTitle": "常见问题解答",
+    "faq1_q": "什么是OpenRouter免费模型浏览器？",
+    "faq1_a": "它是一个旨在简化浏览、筛选和管理OpenRouter提供的免费模型的工具。它可以帮助开发者快速为其项目找到并导出模型ID。",
+    "faq2_q": "如何使用NewAPI的复制格式？",
+    "faq2_a": "选择您想要的模型后，点击“复制”按钮。在弹出的窗口中，您可以选择与NewAPI兼容的“模型名称”或“模型映射JSON”格式。您还可以通过添加前缀或剥离部分模型ID来自定义输出。",
+    "faq3_q": "哪些模型支持推理功能？",
+    "faq3_a": "您可以通过在筛选面板中勾选“仅显示支持推理的模型”选项，轻松找到支持推理的模型。这将自动更新列表，仅显示相关模型。"
+  },
+  "Header": {
+    "logoAlt": "OpenRouter免费模型浏览器Logo - 您的AI模型浏览与导出工具"
+  },
+  "SEO": {
+    "keywords": "OpenRouter, 免费AI模型, ChatGPT, Claude, Gemini, AI模型浏览器, NewAPI, UniAPI, 人工智能, 机器学习",
+    "aboutTitle": "关于OpenRouter免费模型",
+    "aboutDescription": "OpenRouter免费模型浏览器是一个用于发现和管理免费AI模型的综合工具。我们的平台提供对OpenAI、Anthropic、Google等领先AI供应商模型的便捷访问。",
+    "howItWorksTitle": "使用方法",
+    "step1": "浏览我们精选的免费AI模型集合",
+    "step2": "按供应商、公司或技术规格进行筛选",
+    "step3": "以您偏好的格式导出模型配置",
+    "step4": "使用NewAPI或UniAPI集成到您的应用程序中"
   }
 }

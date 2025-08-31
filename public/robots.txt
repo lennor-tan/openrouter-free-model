@@ -1,0 +1,7 @@
+User-agent: *
+
+# Disallow API routes from indexing
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://openrouter-free-model.vercel.app/sitemap.xml

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import { RefreshCw } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -36,20 +37,24 @@ export const Header: React.FC<HeaderProps> = ({
   handleRefresh,
 }) => {
   const t = useTranslations('HomePage');
+  const tHeader = useTranslations('Header');
 
   return (
-    <div className="flex justify-between items-center mb-6">
+    <header className="flex justify-between items-center mb-6" role="banner">
       <div>
-        <div
-          className="flex items-center cursor-pointer"
+        <Link
+          href="/"
           onClick={resetAllFilters}
+          className="flex items-center"
+          aria-label="Back to homepage"
         >
           <Image
             src="/logo.svg"
-            alt="OpenRouter Logo"
+            alt={tHeader('logoAlt')}
             width={40}
             height={40}
             className="mr-3"
+            priority
           />
           <h1 className="text-2xl font-bold leading-[1.1]">
             {t.rich('title', {
@@ -64,7 +69,14 @@ export const Header: React.FC<HeaderProps> = ({
               ),
             })}
           </h1>
-        </div>
+        </Link>
+        {/* SEO优化的描述性文本 (对用户视觉隐藏) */}
+        <p className="sr-only">
+          {t('description', {
+            defaultValue:
+              'Professional OpenRouter free AI model browser with filtering, sorting, batch selection and multi-format export. Compatible with NewAPI and UniAPI.',
+          })}
+        </p>
         {/* 更新时间显示逻辑 */}
         <div className="flex items-center text-xs text-muted-foreground mt-1 h-4">
           {isLoading && !lastFetched ? (
@@ -89,13 +101,21 @@ export const Header: React.FC<HeaderProps> = ({
           ) : null}
         </div>
       </div>
-      <div className="flex items-center space-x-4">
-        <Button onClick={handleRefresh}>
+      <nav
+        className="flex items-center space-x-4"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <Button
+          onClick={handleRefresh}
+          aria-label="Refresh AI models data"
+          title="Refresh AI models data"
+        >
           <RefreshCw className="mr-2 h-4 w-4" />
           {t('refresh')}
         </Button>
         <LanguageSwitcher />
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };

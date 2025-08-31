@@ -30,6 +30,37 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
   const t = useTranslations('HomePage');
+
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: t('faq1_q'),
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: t('faq1_a'),
+        },
+      },
+      {
+        '@type': 'Question',
+        name: t('faq2_q'),
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: t('faq2_a'),
+        },
+      },
+      {
+        '@type': 'Question',
+        name: t('faq3_q'),
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: t('faq3_a'),
+        },
+      },
+    ],
+  };
   const { data, error, isLoading, isValidating, mutate } =
     useSWR<ModelsResponse>('/api/models', fetcher);
 
@@ -199,6 +230,10 @@ export default function Home() {
   return (
     <TooltipProvider>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
         <Header
           isLoading={isLoading}
           isValidating={isValidating}
@@ -250,7 +285,15 @@ export default function Home() {
         </div>
 
         {/* 内容区域 */}
-        {renderContent()}
+        <main role="main">
+          {/* SEO优化的介绍性内容 (对用户视觉隐藏，但可被搜索引擎和屏幕阅读器访问) */}
+          <section className="sr-only" aria-labelledby="introduction-title">
+            <h2 id="introduction-title">{t('subheading')}</h2>
+            <p>{t('introText')}</p>
+          </section>
+
+          {renderContent()}
+        </main>
         <Footer />
       </div>
     </TooltipProvider>

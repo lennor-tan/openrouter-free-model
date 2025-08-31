@@ -230,7 +230,9 @@ export function FilterSortPanel({
               <SelectValue placeholder={t('sortPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="updated_at:desc">{t('sortUpdatedAt')}</SelectItem>
+              <SelectItem value="updated_at:desc">
+                {t('sortUpdatedAt')}
+              </SelectItem>
               <SelectItem value="context_length:desc">
                 {t('sortContextDesc')}
               </SelectItem>

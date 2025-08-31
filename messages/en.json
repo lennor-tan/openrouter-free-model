@@ -17,7 +17,7 @@
     "sortContextAsc": "Context Length (asc)",
     "sortNameAsc": "Name (A-Z)",
     "sortNameDesc": "Name (Z-A)",
-    "showReasoningOnly": "Show reasoning-supported models only",
+    "showReasoningOnly": "Reasoning models only",
     "clearAll": "Clear All"
   },
   "ModelCard": {
@@ -49,6 +49,14 @@
   },
   "HomePage": {
     "title": "OpenRouter <break>Free Models</break>",
+    "description": "Discover and explore free AI models from OpenRouter. Browse, filter, and export model configurations for ChatGPT, Claude, Gemini, and more with support for NewAPI and UniAPI formats.",
+    "heroTitle": "Free AI Models Explorer",
+    "heroSubtitle": "Browse and discover free AI models from OpenRouter with advanced filtering, sorting, and export capabilities",
+    "featuresTitle": "Key Features",
+    "feature1": "Browse 100+ free AI models from top providers",
+    "feature2": "Advanced filtering by company, provider, and architecture",
+    "feature3": "Export configurations for NewAPI and UniAPI",
+    "feature4": "Real-time model updates and availability",
     "lastUpdated": "Updated: {date}",
     "updating": "Updating... (Last update: {date})",
     "selected": "Selected: {selectedCount} / {totalCount}",
@@ -60,6 +68,28 @@
     "errorTitle": "Error",
     "errorMessage": "An error occurred while fetching the model list: {message}",
     "noModelsFound": "No model data found",
-    "viewOnGithub": "View project on GitHub"
+    "viewOnGithub": "View project on GitHub",
+    "subheading": "Explore, Filter, and Export Free AI Models",
+    "introText": "Your central hub to discover, filter, and manage all free AI models available through OpenRouter. Easily select models and export their IDs for seamless integration with tools like NewAPI and UniAPI.",
+    "faqTitle": "Frequently Asked Questions",
+    "faq1_q": "What is the OpenRouter Free Model Explorer?",
+    "faq1_a": "It's a tool designed to simplify browsing, filtering, and managing the free models offered by OpenRouter. It helps developers quickly find and export model IDs for their projects.",
+    "faq2_q": "How do I use the copy formats for NewAPI?",
+    "faq2_a": "After selecting your desired models, click the 'Copy' button. In the modal, you can choose the 'Model Name' or 'Model Mapping JSON' format, which are compatible with NewAPI. You can also customize the output with prefixes or by stripping parts of the model ID.",
+    "faq3_q": "Which models support reasoning?",
+    "faq3_a": "You can easily find models that support reasoning by checking the 'Show reasoning-supported models only' option in the filter panel. This will automatically update the list to show only the relevant models."
+  },
+  "Header": {
+    "logoAlt": "Logo for OpenRouter Free Model Explorer - Your AI Model Browser and Export Tool"
+  },
+  "SEO": {
+    "keywords": "OpenRouter, free AI models, ChatGPT, Claude, Gemini, AI model explorer, NewAPI, UniAPI, artificial intelligence, machine learning",
+    "aboutTitle": "About OpenRouter Free Models",
+    "aboutDescription": "OpenRouter Free Models Explorer is a comprehensive tool for discovering and managing free AI models. Our platform provides easy access to models from leading AI providers including OpenAI, Anthropic, Google, and more.",
+    "howItWorksTitle": "How It Works",
+    "step1": "Browse our curated collection of free AI models",
+    "step2": "Filter by provider, company, or technical specifications",
+    "step3": "Export model configurations in your preferred format",
+    "step4": "Integrate with your applications using NewAPI or UniAPI"
   }
 }

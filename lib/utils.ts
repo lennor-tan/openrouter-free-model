@@ -19,26 +19,17 @@ export function transformModels(models: OpenRouterModel[]): Model[] {
     const icon_url = model.endpoint.provider_info.icon?.url || '';
     return {
       id: model.slug,
-      permaslug: model.permaslug,
-      hf_slug: model.hf_slug,
       company_name,
       name,
-      short_name: model.short_name,
-      author: model.author,
       description: model.description,
       updated_at: model.updated_at,
       context_length: model.context_length,
       input_modalities: model.input_modalities,
       output_modalities: model.output_modalities,
-      group: model.group,
-      endpoint_id: model.endpoint.id,
-      endpoint_name: model.endpoint.name,
       provider_name: model.endpoint.provider_name,
       provider_display_name: model.endpoint.provider_display_name,
-      provider_slug: model.endpoint.provider_slug,
       quantization: model.endpoint.quantization,
       supports_reasoning: model.endpoint.supports_reasoning,
-      max_completion_tokens: model.endpoint.max_completion_tokens,
       icon_url: icon_url.startsWith('http')
         ? icon_url
         : `https://openrouter.ai${icon_url}`,

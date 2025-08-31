@@ -83,7 +83,11 @@ export function ModelCard({
                         </Badge>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{t('filterCompany', { companyName: model.company_name })}</p>
+                        <p>
+                          {t('filterCompany', {
+                            companyName: model.company_name,
+                          })}
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -148,7 +152,11 @@ export function ModelCard({
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{t('filterProvider', { providerName: model.provider_display_name })}</p>
+                <p>
+                  {t('filterProvider', {
+                    providerName: model.provider_display_name,
+                  })}
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -162,14 +170,6 @@ export function ModelCard({
               {model.quantization}
             </span>
           )}
-          {/* {model.group && (
-            <span className="inline-flex items-center px-2.5 py-2.5 rounded-full text-xs font-medium bg-primary text-primary-foreground">
-              {model.group}
-            </span>
-          )}
-          <span className="inline-flex items-center px-2.5 py-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-            {model.author}
-          </span> */}
           {/* 输入/输出模态标签 */}
           <div className="flex flex-wrap items-center gap-1 px-1 py-1 bg-muted/50 rounded-md border border-muted">
             {/* 输入模态标签 */}

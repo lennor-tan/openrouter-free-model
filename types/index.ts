@@ -113,28 +113,19 @@ export interface OpenRouterModel {
 export interface Model {
   // 模型核心信息
   id: string; // slug
-  permaslug: string;
-  hf_slug: string;
   company_name: string;
   name: string;
-  short_name?: string;
-  author: string;
   description: string;
   updated_at: string; // ISO 8601 timestamp
   context_length: number;
   input_modalities: string[];
   output_modalities: string[];
-  group: string;
 
   // 端点信息
-  endpoint_id: string;
-  endpoint_name: string;
   provider_name: string;
   provider_display_name: string;
-  provider_slug: string;
   quantization: string;
   supports_reasoning: boolean;
-  max_completion_tokens: number | null;
   icon_url: string;
 }
 

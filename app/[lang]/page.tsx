@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 import useSWR from 'swr';
+import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ModelListSkeleton } from '@/components/model-view-skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -19,6 +20,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { ModelCard } from '@/components/model-card';
 import { FilterSortPanel } from '@/components/filter-sort-panel';
 import { CopyModal } from '@/components/copy-modal';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 import { ModelsResponse, FilterSortState } from '@/types';
 import { useModelFilter } from '@/hooks/use-model-filter';
 
@@ -26,6 +29,7 @@ import { useModelFilter } from '@/hooks/use-model-filter';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
+  const t = useTranslations('HomePage');
   const { data, error, isLoading, isValidating, mutate } =
     useSWR<ModelsResponse>('/api/models', fetcher);
 
@@ -41,18 +45,6 @@ export default function Home() {
     companyList,
     providerList,
   } = useModelFilter(data?.models || []);
-
-  // 格式化日期时间
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-  };
 
   // 手动刷新数据
   const handleRefresh = () => {
@@ -162,9 +154,9 @@ export default function Home() {
       return (
         <Alert variant="destructive">
           <Terminal className="h-4 w-4" />
-          <AlertTitle>错误</AlertTitle>
+          <AlertTitle>{t('errorTitle')}</AlertTitle>
           <AlertDescription>
-            获取模型列表时发生错误: {error.message}
+            {t('errorMessage', { message: error.message })}
           </AlertDescription>
         </Alert>
       );
@@ -199,7 +191,7 @@ export default function Home() {
 
     return (
       <div className="text-center py-10">
-        <p className="text-muted-foreground">没有找到模型数据</p>
+        <p className="text-muted-foreground">{t('noModelsFound')}</p>
       </div>
     );
   };
@@ -207,44 +199,13 @@ export default function Home() {
   return (
     <TooltipProvider>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1
-              onClick={resetAllFilters}
-              className="text-3xl font-bold cursor-pointer"
-            >
-              OpenRouter <span className="whitespace-nowrap">Free Models</span>
-            </h1>
-            {/* 更新时间显示逻辑 */}
-            <div className="flex items-center text-xs text-muted-foreground mt-1 h-4">
-              {isLoading && !data ? (
-                <Skeleton className="h-4 w-48 rounded" />
-              ) : data?.last_fetched ? (
-                isValidating ? (
-                  <>
-                    <RefreshCw className="mr-1 h-3 w-3 animate-spin" />
-                    <span>
-                      更新中... (上次更新: {formatDateTime(data.last_fetched)})
-                    </span>
-                  </>
-                ) : (
-                  <span>更新: {formatDateTime(data.last_fetched)}</span>
-                )
-              ) : null}
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-muted-foreground">
-              已选择: {selectedModelIds.size} /{' '}
-              {filteredAndSortedModels.length || 0}
-            </span>
-            <Button onClick={handleRefresh}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              刷新
-            </Button>
-          </div>
-        </div>
-
+        <Header
+          isLoading={isLoading}
+          isValidating={isValidating}
+          lastFetched={data?.last_fetched}
+          resetAllFilters={resetAllFilters}
+          handleRefresh={handleRefresh}
+        />
         {/* 筛选/排序面板 */}
         <FilterSortPanel
           searchTerm={filterSortState.searchTerm}
@@ -272,34 +233,25 @@ export default function Home() {
             ) : (
               <CheckSquare className="mr-2 h-4 w-4" />
             )}
-            {isAllSelected ? '取消全选' : '全选'}
+            {isAllSelected ? t('deselectAll') : t('selectAll')}
           </Button>
           <Button onClick={handleInvertSelection} variant="outline" size="sm">
             <FlipHorizontal className="mr-2 h-4 w-4" />
-            反选
+            {t('invertSelection')}
           </Button>
           <div className="flex-grow"></div>
           <CopyModal selectedModels={selectedModels}>
             <Button disabled={!hasSelectedModels} variant="outline" size="sm">
               <Copy className="mr-2 h-4 w-4" />
-              复制
+              {t('copy')}[{selectedModelIds.size}/
+              {filteredAndSortedModels.length || 0}]
             </Button>
           </CopyModal>
         </div>
 
         {/* 内容区域 */}
         {renderContent()}
-        <footer className="text-center mt-10 py-4 border-t">
-          <a
-            href="https://github.com/jomon/openrouter-free-model"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-primary flex items-center justify-center"
-          >
-            <Github className="mr-2 h-4 w-4" />
-            View project on GitHub
-          </a>
-        </footer>
+        <Footer />
       </div>
     </TooltipProvider>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -30,9 +31,11 @@ export function ModelCard({
   onProviderClick,
   isProviderSelected,
 }: ModelCardProps) {
+  const t = useTranslations('ModelCard');
+
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success(`已复制: ${text}`);
+    toast.success(t('copied', { text }));
   };
 
   // 格式化日期
@@ -80,7 +83,7 @@ export function ModelCard({
                         </Badge>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>筛选 “{model.company_name}” 公司的所有模型</p>
+                        <p>{t('filterCompany', { companyName: model.company_name })}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -93,7 +96,7 @@ export function ModelCard({
                         <Brain className="ml-2 h-4 w-4 text-blue-500" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>支持推理功能</p>
+                        <p>{t('supportsReasoning')}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -110,7 +113,7 @@ export function ModelCard({
                     </p>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>点击复制</p>
+                    <p>{t('clickToCopy')}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -145,7 +148,7 @@ export function ModelCard({
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p>筛选 “{model.provider_display_name}” 供应商的所有模型</p>
+                <p>{t('filterProvider', { providerName: model.provider_display_name })}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

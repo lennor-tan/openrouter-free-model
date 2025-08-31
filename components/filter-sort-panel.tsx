@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -59,6 +60,7 @@ export function FilterSortPanel({
   providerList,
   onClearAllFilters,
 }: FilterSortPanelProps) {
+  const t = useTranslations('FilterSortPanel');
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
 
   useEffect(() => {
@@ -87,7 +89,7 @@ export function FilterSortPanel({
           {/* 搜索框 */}
           <div className="relative">
             <Input
-              placeholder="搜索模型..."
+              placeholder={t('searchPlaceholder')}
               value={localSearchTerm}
               onChange={(e) => setLocalSearchTerm(e.target.value)}
               className="pr-10"
@@ -106,7 +108,7 @@ export function FilterSortPanel({
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-full justify-start">
-                <span>选择公司...</span>
+                <span>{t('selectCompany')}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent
@@ -114,9 +116,9 @@ export function FilterSortPanel({
               align="start"
             >
               <Command>
-                <CommandInput placeholder="搜索公司..." />
+                <CommandInput placeholder={t('searchCompany')} />
                 <CommandList>
-                  <CommandEmpty>没有找到公司</CommandEmpty>
+                  <CommandEmpty>{t('noCompanyFound')}</CommandEmpty>
                   <CommandGroup>
                     <CommandItem onSelect={() => onCompanyChange('all', true)}>
                       <div
@@ -129,7 +131,7 @@ export function FilterSortPanel({
                       >
                         <Check className={cn('h-4 w-4')} />
                       </div>
-                      <span>全选</span>
+                      <span>{t('selectAll')}</span>
                     </CommandItem>
                     {companyList.map((company) => {
                       const isSelected = selectedCompanies.includes(
@@ -166,7 +168,7 @@ export function FilterSortPanel({
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-full justify-start">
-                <span>选择供应商...</span>
+                <span>{t('selectProvider')}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent
@@ -174,9 +176,9 @@ export function FilterSortPanel({
               align="start"
             >
               <Command>
-                <CommandInput placeholder="搜索供应商..." />
+                <CommandInput placeholder={t('searchProvider')} />
                 <CommandList>
-                  <CommandEmpty>没有找到供应商</CommandEmpty>
+                  <CommandEmpty>{t('noProviderFound')}</CommandEmpty>
                   <CommandGroup>
                     <CommandItem onSelect={() => onProviderChange('all', true)}>
                       <div
@@ -189,7 +191,7 @@ export function FilterSortPanel({
                       >
                         <Check className={cn('h-4 w-4')} />
                       </div>
-                      <span>全选</span>
+                      <span>{t('selectAll')}</span>
                     </CommandItem>
                     {providerList.map((provider) => {
                       const isSelected = selectedProviders.includes(
@@ -225,18 +227,18 @@ export function FilterSortPanel({
           {/* 排序方式 */}
           <Select value={sortBy} onValueChange={onSortChange}>
             <SelectTrigger>
-              <SelectValue placeholder="排序方式" />
+              <SelectValue placeholder={t('sortPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="updated_at:desc">最近更新</SelectItem>
+              <SelectItem value="updated_at:desc">{t('sortUpdatedAt')}</SelectItem>
               <SelectItem value="context_length:desc">
-                上下文长度 (降序)
+                {t('sortContextDesc')}
               </SelectItem>
               <SelectItem value="context_length:asc">
-                上下文长度 (升序)
+                {t('sortContextAsc')}
               </SelectItem>
-              <SelectItem value="name:asc">名称 (A-Z)</SelectItem>
-              <SelectItem value="name:desc">名称 (Z-A)</SelectItem>
+              <SelectItem value="name:asc">{t('sortNameAsc')}</SelectItem>
+              <SelectItem value="name:desc">{t('sortNameDesc')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -247,7 +249,7 @@ export function FilterSortPanel({
               checked={showReasoningOnly}
               onCheckedChange={(checked) => onShowReasoningChange(!!checked)}
             />
-            <Label htmlFor="reasoning-filter">仅显示支持推理的模型</Label>
+            <Label htmlFor="reasoning-filter">{t('showReasoningOnly')}</Label>
           </div>
         </div>
         {(selectedCompanies.length > 0 || selectedProviders.length > 0) && (
@@ -290,7 +292,7 @@ export function FilterSortPanel({
                 onClick={onClearAllFilters}
               >
                 <CircleX className="h-4 w-4 mr-1 text-red-400" />
-                全部清除
+                {t('clearAll')}
               </Button>
             )}
           </div>

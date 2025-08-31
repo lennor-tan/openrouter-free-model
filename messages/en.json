@@ -1,0 +1,65 @@
+{
+  "FilterSortPanel": {
+    "title": "Filters",
+    "sortBy": "Sort by",
+    "architecture": "Architecture",
+    "searchPlaceholder": "Search models...",
+    "selectCompany": "Select company...",
+    "searchCompany": "Search company...",
+    "noCompanyFound": "No company found.",
+    "selectAll": "Select All",
+    "selectProvider": "Select provider...",
+    "searchProvider": "Search provider...",
+    "noProviderFound": "No provider found.",
+    "sortPlaceholder": "Sort by",
+    "sortUpdatedAt": "Recently Updated",
+    "sortContextDesc": "Context Length (desc)",
+    "sortContextAsc": "Context Length (asc)",
+    "sortNameAsc": "Name (A-Z)",
+    "sortNameDesc": "Name (Z-A)",
+    "showReasoningOnly": "Show reasoning-supported models only",
+    "clearAll": "Clear All"
+  },
+  "ModelCard": {
+    "context": "Context",
+    "id": "ID",
+    "copied": "Copied: {text}",
+    "filterCompany": "Filter all models from \"{companyName}\"",
+    "supportsReasoning": "Supports reasoning",
+    "clickToCopy": "Click to copy",
+    "filterProvider": "Filter all models from \"{providerName}\""
+  },
+  "CopyModal": {
+    "copied": "Copied {format}",
+    "title": "Copy Model IDs",
+    "enableMapping": "Enable model mapping",
+    "mappingOptions": "Custom Mapping Options",
+    "mappingPrefix": "Mapping Prefix",
+    "stripFreeSuffix": "Strip :free suffix",
+    "stripCompanyName": "Strip company name",
+    "modelNameFormat": "Model Name",
+    "modelMappingJsonFormat": "Model Mapping JSON",
+    "uniapiFormat": "UniAPI"
+  },
+  "LanguageSwitcher": {
+    "placeholder": "Language",
+    "english": "English",
+    "chinese": "中文",
+    "tooltip": "Switch language"
+  },
+  "HomePage": {
+    "title": "OpenRouter <break>Free Models</break>",
+    "lastUpdated": "Updated: {date}",
+    "updating": "Updating... (Last update: {date})",
+    "selected": "Selected: {selectedCount} / {totalCount}",
+    "refresh": "Refresh",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "invertSelection": "Invert Selection",
+    "copy": "Copy",
+    "errorTitle": "Error",
+    "errorMessage": "An error occurred while fetching the model list: {message}",
+    "noModelsFound": "No model data found",
+    "viewOnGithub": "View project on GitHub"
+  }
+}

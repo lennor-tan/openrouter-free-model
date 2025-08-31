@@ -1,0 +1,65 @@
+{
+  "FilterSortPanel": {
+    "title": "筛选",
+    "sortBy": "排序方式",
+    "architecture": "架构",
+    "searchPlaceholder": "搜索模型...",
+    "selectCompany": "选择公司...",
+    "searchCompany": "搜索公司...",
+    "noCompanyFound": "没有找到公司",
+    "selectAll": "全选",
+    "selectProvider": "选择供应商...",
+    "searchProvider": "搜索供应商...",
+    "noProviderFound": "没有找到供应商",
+    "sortPlaceholder": "排序方式",
+    "sortUpdatedAt": "最近更新",
+    "sortContextDesc": "上下文长度 (降序)",
+    "sortContextAsc": "上下文长度 (升序)",
+    "sortNameAsc": "名称 (A-Z)",
+    "sortNameDesc": "名称 (Z-A)",
+    "showReasoningOnly": "仅显示支持推理的模型",
+    "clearAll": "全部清除"
+  },
+  "ModelCard": {
+    "context": "上下文",
+    "id": "ID",
+    "copied": "已复制: {text}",
+    "filterCompany": "筛选 “{companyName}” 公司的所有模型",
+    "supportsReasoning": "支持推理功能",
+    "clickToCopy": "点击复制",
+    "filterProvider": "筛选 “{providerName}” 供应商的所有模型"
+  },
+  "CopyModal": {
+    "copied": "已复制 {format}",
+    "title": "复制模型 ID",
+    "enableMapping": "是否映射模型",
+    "mappingOptions": "模型自定义选项",
+    "mappingPrefix": "映射前缀",
+    "stripFreeSuffix": "去掉 :free 后缀",
+    "stripCompanyName": "去掉公司名",
+    "modelNameFormat": "模型名",
+    "modelMappingJsonFormat": "模型映射 JSON",
+    "uniapiFormat": "UniAPI"
+  },
+  "LanguageSwitcher": {
+    "placeholder": "语言",
+    "english": "English",
+    "chinese": "中文",
+    "tooltip": "切换语言"
+  },
+  "HomePage": {
+    "title": "OpenRouter <break>免费模型</break>",
+    "lastUpdated": "更新: {date}",
+    "updating": "更新中... (上次更新: {date})",
+    "selected": "已选择: {selectedCount} / {totalCount}",
+    "refresh": "刷新",
+    "selectAll": "全选",
+    "deselectAll": "取消全选",
+    "invertSelection": "反选",
+    "copy": "复制",
+    "errorTitle": "错误",
+    "errorMessage": "获取模型列表时发生错误: {message}",
+    "noModelsFound": "没有找到模型数据",
+    "viewOnGithub": "在 GitHub 上查看项目"
+  }
+}

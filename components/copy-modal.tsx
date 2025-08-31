@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -23,7 +24,6 @@ interface CopyModalProps {
   children: React.ReactNode;
 }
 
-// ... (格式化函数保持不变)
 const generateMappedName = (
   modelId: string,
   prefix: string,
@@ -88,26 +88,22 @@ const formatUniAPI = (
     .join('\n');
 };
 
-// 复制到剪贴板
-const handleCopy = (text: string, format: string) => {
-  navigator.clipboard.writeText(text);
-  toast.success(`已复制 ${format}`);
-};
-
 export function CopyModal({ selectedModels, children }: CopyModalProps) {
-  // 映射功能的状态
+  const t = useTranslations('CopyModal');
   const [enableMapping, setEnableMapping] = useState(false);
   const [mappingPrefix, setMappingPrefix] = useState('openrouter@');
   const [mappingStripFree, setMappingStripFree] = useState(false);
   const [mappingStripCompany, setMappingStripCompany] = useState(false);
 
-  // 为可编辑文本框创建 state
   const [newApiJsonContent, setNewApiJsonContent] = useState('');
   const [uniApiContent, setUniApiContent] = useState('');
-  // 为只读的 CSV 文本框创建 state
   const [newApiCsvContent, setNewApiCsvContent] = useState('');
 
-  // 预先计算初始数据
+  const handleCopy = (text: string, format: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success(t('copied', { format }));
+  };
+
   const initialNewApiJson = useMemo(() => {
     return formatNewAPIJson(
       selectedModels,
@@ -140,7 +136,6 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
     mappingStripCompany,
   ]);
 
-  // 使用 useEffect 更新可编辑文本框的内容
   useEffect(() => {
     setNewApiJsonContent(initialNewApiJson);
   }, [initialNewApiJson]);
@@ -149,7 +144,6 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
     setUniApiContent(initialUniApi);
   }, [initialUniApi]);
 
-  // 实时从 JSON 内容同步到 CSV 内容
   useEffect(() => {
     try {
       const parsed = JSON.parse(newApiJsonContent);
@@ -158,7 +152,7 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
         setNewApiCsvContent(keys.join(','));
       }
     } catch (error) {
-      // 如果 JSON 无效，保持上一次的有效状态
+      // If JSON is invalid, keep the last valid state
     }
   }, [newApiJsonContent]);
 
@@ -167,24 +161,23 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>
-          <DialogTitle>复制模型 ID</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
         </DialogHeader>
 
-        {/* ... (映射选项 UI 保持不变) */}
         <div className="flex items-center space-x-2 my-4">
           <Checkbox
             id="enable-mapping"
             checked={enableMapping}
             onCheckedChange={(checked) => setEnableMapping(checked as boolean)}
           />
-          <Label htmlFor="enable-mapping">是否映射模型</Label>
+          <Label htmlFor="enable-mapping">{t('enableMapping')}</Label>
         </div>
 
         {enableMapping && (
           <div className="p-4 border rounded-md space-y-4 mb-4">
-            <h4 className="font-medium">模型自定义选项</h4>
+            <h4 className="font-medium">{t('mappingOptions')}</h4>
             <div className="grid grid-cols-2 gap-4 items-center">
-              <Label htmlFor="prefix-input">映射前缀</Label>
+              <Label htmlFor="prefix-input">{t('mappingPrefix')}</Label>
               <Input
                 id="prefix-input"
                 value={mappingPrefix}
@@ -199,7 +192,7 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
                   setMappingStripFree(checked as boolean)
                 }
               />
-              <Label htmlFor="strip-free">去掉 :free 后缀</Label>
+              <Label htmlFor="strip-free">{t('stripFreeSuffix')}</Label>
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox
@@ -209,7 +202,7 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
                   setMappingStripCompany(checked as boolean)
                 }
               />
-              <Label htmlFor="strip-company">去掉公司名</Label>
+              <Label htmlFor="strip-company">{t('stripCompanyName')}</Label>
             </div>
           </div>
         )}
@@ -221,11 +214,16 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
           </TabsList>
 
           <TabsContent value="newapi" className="space-y-4">
-            <CodePreview data={newApiCsvContent} format="模型名" />
+            <CodePreview
+              data={newApiCsvContent}
+              format={t('modelNameFormat')}
+              onCopy={handleCopy}
+            />
             <EditablePreview
               value={newApiJsonContent}
               onChange={(e) => setNewApiJsonContent(e.target.value)}
-              format="模型映射 JSON"
+              format={t('modelMappingJsonFormat')}
+              onCopy={handleCopy}
             />
           </TabsContent>
 
@@ -234,6 +232,7 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
               value={uniApiContent}
               onChange={(e) => setUniApiContent(e.target.value)}
               format=""
+              onCopy={handleCopy}
             />
           </TabsContent>
         </Tabs>
@@ -242,8 +241,15 @@ export function CopyModal({ selectedModels, children }: CopyModalProps) {
   );
 }
 
-// 只读的预览组件
-function CodePreview({ data, format }: { data: string; format: string }) {
+function CodePreview({
+  data,
+  format,
+  onCopy,
+}: {
+  data: string;
+  format: string;
+  onCopy: (text: string, format: string) => void;
+}) {
   const lineCount = data.split('\n').length;
   const height = Math.max(100, Math.min(240, lineCount * 24));
 
@@ -260,7 +266,7 @@ function CodePreview({ data, format }: { data: string; format: string }) {
         variant="ghost"
         size="icon"
         className="absolute top-8 right-2 h-7 w-7 hover:bg-border"
-        onClick={() => handleCopy(data, format)}
+        onClick={() => onCopy(data, format)}
       >
         <Copy className="h-4 w-4" />
       </Button>
@@ -268,24 +274,26 @@ function CodePreview({ data, format }: { data: string; format: string }) {
   );
 }
 
-// 可编辑的预览组件
 function EditablePreview({
   value,
   onChange,
   format,
+  onCopy,
 }: {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   format: string;
+  onCopy: (text: string, format: string) => void;
 }) {
+  const t = useTranslations('CopyModal');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = 'auto'; // 重置高度以获取准确的 scrollHeight
+      textarea.style.height = 'auto';
       const scrollHeight = textarea.scrollHeight;
-      const maxHeight = 240; // 对应 max-h-60
+      const maxHeight = 240;
       textarea.style.height = `${Math.min(scrollHeight, maxHeight)}px`;
     }
   }, [value]);
@@ -301,13 +309,13 @@ function EditablePreview({
         onChange={onChange}
         className={`bg-muted rounded-md p-4 text-sm font-mono overflow-y-auto break-all ${format ? 'mt-1' : ''}`}
         placeholder="..."
-        rows={1} // 初始行数设为1，让 useEffect 来控制高度
+        rows={1}
       />
       <Button
         variant="ghost"
         size="icon"
         className={`absolute ${format ? 'top-8' : 'top-2'} right-2 h-7 w-7 hover:bg-border`}
-        onClick={() => handleCopy(value, format || 'UniAPI')}
+        onClick={() => onCopy(value, format || t('uniapiFormat'))}
       >
         <Copy className="h-4 w-4" />
       </Button>

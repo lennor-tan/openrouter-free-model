@@ -9,7 +9,8 @@ import { transformModels } from '@/lib/utils';
  */
 export async function GET(request: NextRequest) {
   // 设置缓存策略：每 12 小时 (43200 秒) 重新验证一次数据
-  const cacheControl = 'public, s-maxage=43200, stale-while-revalidate=86400';
+  // 设置缓存策略：每 1 小时 (3600 秒) 重新验证一次数据
+  const cacheControl = 'public, s-maxage=3600, stale-while-revalidate=86400';
 
   try {
     // 向 OpenRouter API 发起请求

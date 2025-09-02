@@ -65,6 +65,7 @@ export function ModelView({ initialData }: ModelViewProps) {
   const { data, error, isLoading, isValidating, mutate } =
     useSWR<ModelsResponse>('/api/models', fetcher, {
       fallbackData: initialData,
+      revalidateIfStale: false, // Do not revalidate if there is stale data
       revalidateOnFocus: false, // 避免在窗口聚焦时自动重新验证
       revalidateOnReconnect: false, // 避免在网络重连时自动重新验证
     });

